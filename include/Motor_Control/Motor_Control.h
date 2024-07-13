@@ -1,7 +1,7 @@
 
 
-#ifndef Car_Lib_h
-#define Car_Lib_h
+#ifndef Main_Motor_h
+#define Main_Motor_h
 
 #define STEERING_MOTOR_IN1 2
 #define STEERING_MOTOR_IN2 3
@@ -14,9 +14,11 @@
 
 #define ENCODER A5
 
+#include <PID_v1.h>
+
 class MainMotor{
 private:
-    int speed;
+    int speed;  
 
 public:
     MainMotor();
@@ -27,13 +29,13 @@ public:
 
 class SteeringMotor{
 private:
-    int angle;
+    double kp = 1, ki = 0, kd = 0.5;
+    double input, output, setpoint;
+    PID* motor_pid;
 
 public:
-    SteeringMotor(double input, double output, double setpoint, double kp, double ki, double kd);
-    int read_encoder(void);
+    SteeringMotor();
+    void read_encoder(void);
     void wheel_steering(void); 
-
 };
-
 #endif
