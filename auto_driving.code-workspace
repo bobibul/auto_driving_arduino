@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../../../auto_driving"
+		},
+		{
+			"name": "auto_driving_arduino",
+			"path": "."
+		},
+		{
+			"name": "autodriving_test",
+			"path": "../autodriving_test"
+		}
+	],
+	"settings": {}
+}
