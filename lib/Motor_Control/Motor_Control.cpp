@@ -46,35 +46,26 @@ SteeringMotor::SteeringMotor() : input(0), output(0), setpoint(0)
     pinMode(STEERING_MOTOR_IN2, OUTPUT);
 
     motor_pid->SetMode(AUTOMATIC);
-    motor_pid->SetOutputLimits(-30, 30);
+    motor_pid->SetOutputLimits(-255, 255);
+    
 }
 
 void SteeringMotor::read_angle(void)
 {
-    input = analogRead(A5) / 4 - 125;
+    cur_angle = (analogRead(A5) - 505) / 4;
+    input = target_angle - cur_angle;
 }
 
 void SteeringMotor::wheel_steering(void)
 {
-    read_angle();
-
-    if(Serial.available() > 0){
-        setpoint = Serial.parseInt();
-        motor_pid->Compute();
-    }
-
-    else{
-        // do nothing
-    }
-
-
-    if(output > 0){
-        analogWrite(STEERING_MOTOR_IN1, output * RATIO);
+    motor_pid->Compute();
+    if(input < 0){
+        analogWrite(STEERING_MOTOR_IN1, output);
         analogWrite(STEERING_MOTOR_IN2, LOW);
     }
 
     else{
         analogWrite(STEERING_MOTOR_IN1, LOW);
-        analogWrite(STEERING_MOTOR_IN2, -output * RATIO);
+        analogWrite(STEERING_MOTOR_IN2, -output);
     }
 }

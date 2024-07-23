@@ -13,7 +13,6 @@
 #define MAIN_MOTOR_l_IN2 9
 
 #define ENCODER A5
-#define RATIO 8
 
 #include <PID_v1.h>
 
@@ -28,8 +27,10 @@ public:
 
 class SteeringMotor{
 public:
-    double kp = 1, ki = 0, kd = 0.5;
+    double kp = 8, ki = 0, kd = 0.1;
     double input, output, setpoint;
+    int cur_angle = 0;
+    int target_angle = 0;
     PID* motor_pid;
 
     SteeringMotor();
