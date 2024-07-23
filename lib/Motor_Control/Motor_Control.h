@@ -12,9 +12,8 @@
 #define MAIN_MOTOR_l_IN1 8
 #define MAIN_MOTOR_l_IN2 9
 
-#define ENCODER A5
 
-#include <PID_v1.h>
+#define ENCODER A5
 
 class MainMotor{
 public:
@@ -27,14 +26,20 @@ public:
 
 class SteeringMotor{
 public:
-    double kp = 8, ki = 0, kd = 0.1;
-    double input, output, setpoint;
-    int cur_angle = 0;
-    int target_angle = 0;
-    PID* motor_pid;
+    int input, output, setpoint;
 
     SteeringMotor();
     void read_angle(void);
     void wheel_steering(void); 
 };
+
+class Ultrasonic{
+public:
+    int trig, echo;
+    long distance, duration;
+
+    Ultrasonic(int trig, int echo);
+    float ultrasonic_distance(void);
+};
+
 #endif

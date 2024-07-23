@@ -1,31 +1,43 @@
-// #include <Arduino.h>
-// #include "Motor_Control.h"
-// #include "Mission.h"
+#include <Arduino.h>
+#include "Motor_Control.h"
+#include "Mission.h"
 
 
-// int cmd;
+int inturrupt_setpoint = 0;
 
-// void setup() 
-// {
-//   MainMotor main_motor;
-//   SteeringMotor steering_motor;
+void setup() 
+{
+    MainMotor main_motor;
+    SteeringMotor steering_motor;
+    Ultrasonic ultrasonic_left(40, 41);
+    Ultrasonic ultrasonic_right(42, 43);
+    Ultrasonic ultrasonic_front(44, 45);
 
-//   Serial.begin(9600);
-//   Serial.println("Arduino Mega connected to Serial monitor");
-  
-  
-//   while(1){
-//     switch(Serial.parseInt()){
-//       case 1:
-//         mission1(main_motor, steering_motor);
-//       case 2:
-//         mission2(main_motor, steering_motor);
-//       case 3:
-//         mission3(main_motor, steering_motor);
-//     }
-//   }
-// }
+    Serial.begin(115200); // 시리얼 모니터 연결
+    main_motor.motor_forward(50);
+    
+    while(true){
+        
+        steering_motor.setpoint = inturrupt_setpoint;
+        steering_motor.read_angle();
+        steering_motor.wheel_steering();
+        // Serial.print("cur_angle: ");
+        // Serial.print(steering_motor.input);
+        // Serial.print("  setpoint: ");
+        // Serial.print(steering_motor.setpoint);
+        // Serial.print("  output: ");
+        // Serial.println(steering_motor.output);
+        
+    }
+    
+}
 
-// void loop() {
-//   // do nothing
-// }
+void loop() {
+  // do nothing
+}
+
+void serialEvent(){
+
+    inturrupt_setpoint = Serial.parseInt();
+    Serial.println("hi");
+}
