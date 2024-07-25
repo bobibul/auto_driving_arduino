@@ -56,11 +56,11 @@ void SteeringMotor::wheel_steering(void)
     
     if(output > 0){
         analogWrite(STEERING_MOTOR_IN1, LOW);
-        analogWrite(STEERING_MOTOR_IN2,  output * 30);
+        analogWrite(STEERING_MOTOR_IN2,  70 + output * 30);
     }
 
     else{
-        analogWrite(STEERING_MOTOR_IN1, -output * 30);
+        analogWrite(STEERING_MOTOR_IN1, 70 -output * 30);
         analogWrite(STEERING_MOTOR_IN2, LOW);
     }
 }
