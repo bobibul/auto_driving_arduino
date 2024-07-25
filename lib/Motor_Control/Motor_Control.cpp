@@ -21,11 +21,11 @@ void MainMotor::motor_forward(int speed)
 
 void MainMotor::motor_backward(int speed)
 {
-    this->speed = -speed;
+    this->speed = speed;
     analogWrite(MAIN_MOTOR_r_IN1, LOW);
-    analogWrite(MAIN_MOTOR_r_IN2, -speed);
+    analogWrite(MAIN_MOTOR_r_IN2, speed);
     analogWrite(MAIN_MOTOR_l_IN1, LOW);
-    analogWrite(MAIN_MOTOR_l_IN2, -speed);
+    analogWrite(MAIN_MOTOR_l_IN2, speed);
 }
 
 void MainMotor::motor_hold(void)
@@ -52,16 +52,44 @@ void SteeringMotor::read_angle(void)
 
 void SteeringMotor::wheel_steering(void)
 {
-    output = (setpoint - input) * 10;
+    output = (setpoint - input);
+    
     if(output > 0){
-        analogWrite(STEERING_MOTOR_IN1, output);
-        analogWrite(STEERING_MOTOR_IN2, LOW);
+        analogWrite(STEERING_MOTOR_IN1, LOW);
+        analogWrite(STEERING_MOTOR_IN2,  output * 30);
     }
 
     else{
-        analogWrite(STEERING_MOTOR_IN1, LOW);
-        analogWrite(STEERING_MOTOR_IN2, -output);
+        analogWrite(STEERING_MOTOR_IN1, -output * 30);
+        analogWrite(STEERING_MOTOR_IN2, LOW);
     }
+}
+
+void SteeringMotor::parking_wheel_steering(int setpoint)
+{
+    this->setpoint = setpoint;
+    unsigned long startTime = millis();
+    int parameter = 20;
+    while(millis() - startTime < 2000){
+
+        read_angle();
+        output = (setpoint - input);
+
+        if(output > 0){
+        analogWrite(STEERING_MOTOR_IN1, LOW);
+        analogWrite(STEERING_MOTOR_IN2,  5 * parameter + output * 20);
+        }
+
+        else{
+            analogWrite(STEERING_MOTOR_IN1, 5 * parameter -output * 20);
+            analogWrite(STEERING_MOTOR_IN2, LOW);
+        }
+        parameter--;
+    }
+
+    analogWrite(STEERING_MOTOR_IN1, LOW);
+    analogWrite(STEERING_MOTOR_IN2, LOW);
+   
 }
 
 Ultrasonic::Ultrasonic(int trig, int echo)

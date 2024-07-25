@@ -31,6 +31,7 @@ public:
     SteeringMotor();
     void read_angle(void);
     void wheel_steering(void); 
+    void parking_wheel_steering(int setpoint);
 };
 
 class Ultrasonic{
