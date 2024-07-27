@@ -56,11 +56,11 @@ void SteeringMotor::wheel_steering(void)
     
     if(output > 1){
         analogWrite(STEERING_MOTOR_IN1, LOW);
-        analogWrite(STEERING_MOTOR_IN2,  100 + output * 2);
+        analogWrite(STEERING_MOTOR_IN2,  80 + output * 3);
     }
 
     else if(output < -1){
-        analogWrite(STEERING_MOTOR_IN1, 100 - output * 2);
+        analogWrite(STEERING_MOTOR_IN1, 80 - output * 3);
         analogWrite(STEERING_MOTOR_IN2, LOW);
     }
     else{
@@ -73,22 +73,25 @@ void SteeringMotor::parking_wheel_steering(int setpoint)
 {
     this->setpoint = setpoint;
     unsigned long startTime = millis();
-    int parameter = 20;
-    while(millis() - startTime < 2000){
+
+    while(millis() - startTime < 1500){
 
         read_angle();
         output = (setpoint - input);
 
-        if(output > 0){
-        analogWrite(STEERING_MOTOR_IN1, LOW);
-        analogWrite(STEERING_MOTOR_IN2,  5 * parameter + output * 20);
+        if(output > 1){
+            analogWrite(STEERING_MOTOR_IN1, LOW);
+            analogWrite(STEERING_MOTOR_IN2,  80 + output * 3);
         }
 
-        else{
-            analogWrite(STEERING_MOTOR_IN1, 5 * parameter -output * 20);
+        else if(output < -1){
+            analogWrite(STEERING_MOTOR_IN1, 80 - output * 3);
             analogWrite(STEERING_MOTOR_IN2, LOW);
         }
-        parameter--;
+        else{
+            analogWrite(STEERING_MOTOR_IN1, LOW);
+            analogWrite(STEERING_MOTOR_IN2, LOW);
+        }
     }
 
     analogWrite(STEERING_MOTOR_IN1, LOW);

@@ -11,18 +11,25 @@ String inputString = "";
 
 String prev;
 bool stringcomplete = false;
+bool stringstart = false;
+int angle = 0;
 
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
     main_motor.motor_forward(60);
+    
 }
 
 void loop() {
 
     while(Serial.available()){
         char inchar = (char)Serial.read();
-        if(inchar == '\n'){
+        Serial.print(inchar);
+        if(inchar == 'o'){
+            stringstart = true;
+        }
+        else if(inchar == '\n'){
             stringcomplete = true;
         }
         else{
@@ -31,10 +38,11 @@ void loop() {
             }
         }
     }
-    if(inputString == ""){
-        inputString = prev;
+
+    if(stringcomplete == true && stringstart == true){
+        angle = inputString.toInt();    
     }
-    int angle = inputString.toInt();
+    
     steering_motor.setpoint = angle;
     Serial.println(angle);
 
@@ -47,7 +55,7 @@ void loop() {
     // Serial.print(steering_motor.setpoint);
     // Serial.print("  output: ");
     // Serial.println(steering_motor.output);
-    prev = inputString;
     inputString = "";
     stringcomplete = false;
+    stringstart = false;
 }
