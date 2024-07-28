@@ -17,7 +17,7 @@ int angle = 0;
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(60);
+    main_motor.motor_forward(100);
     
 }
 
@@ -43,11 +43,20 @@ void loop() {
         angle = inputString.toInt();    
     }
     
-    steering_motor.setpoint = angle;
+    if(angle == 7777){
+        main_motor.motor_forward(0);
+    }
+    else{
+        main_motor.motor_forward(100);
+        steering_motor.setpoint = angle;
+        steering_motor.read_angle();
+        steering_motor.wheel_steering();
+    }
+
+    
     Serial.println(angle);
 
-    steering_motor.read_angle();
-    steering_motor.wheel_steering();
+
 
     // Serial.print("    cur_angle: ");
     // Serial.print(steering_motor.input);
