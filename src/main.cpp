@@ -32,6 +32,14 @@ void loop() {
         else if(inchar == '\n'){
             stringcomplete = true;
         }
+
+        else if(inchar == 'r'){
+            main_motor.motor_hold();
+        }
+
+        else if(inchar == 'g'){
+            main_motor.motor_forward(100);
+        }
         else{
             if(stringcomplete == false){
                 inputString += inchar;
@@ -42,17 +50,11 @@ void loop() {
     if(stringcomplete == true && stringstart == true){
         angle = inputString.toInt();    
     }
+   
     
-    if(angle == 7777){
-        main_motor.motor_forward(0);
-    }
-    else{
-        main_motor.motor_forward(100);
-        steering_motor.setpoint = angle;
-        steering_motor.read_angle();
-        steering_motor.wheel_steering();
-    }
-
+    steering_motor.setpoint = angle;
+    steering_motor.read_angle();
+    steering_motor.wheel_steering();
     
     Serial.println(angle);
 
