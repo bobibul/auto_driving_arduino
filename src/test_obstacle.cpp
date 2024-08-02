@@ -67,7 +67,7 @@ void loop() {
         }
     }
 
-    if(stringcomplete == true && stringstart == true && millis() - startTime >= 3000){
+    if(stringcomplete == true && stringstart == true && millis() - startTime >= 5000){
         angle = inputString.toInt(); 
         main_motor.motor_forward(60);   
     }
@@ -75,6 +75,7 @@ void loop() {
     steering_motor.setpoint = angle;
     steering_motor.read_angle();
     steering_motor.wheel_steering();
+    Serial.println(millis() - startTime );
 
     inputString = "";
     stringcomplete = false;
