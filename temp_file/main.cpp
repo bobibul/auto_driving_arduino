@@ -17,7 +17,7 @@ int angle = 0;
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(100);
+    main_motor.motor_forward(255);
     
 }
 
@@ -33,13 +33,6 @@ void loop() {
             stringcomplete = true;
         }
 
-        else if(inchar == 'r'){
-            main_motor.motor_hold();
-        }
-
-        else if(inchar == 'g'){
-            main_motor.motor_forward(100);
-        }
         else{
             if(stringcomplete == false){
                 inputString += inchar;
@@ -58,14 +51,6 @@ void loop() {
     
     Serial.println(angle);
 
-
-
-    // Serial.print("    cur_angle: ");
-    // Serial.print(steering_motor.input);
-    // Serial.print("  setpoint: ");
-    // Serial.print(steering_motor.setpoint);
-    // Serial.print("  output: ");
-    // Serial.println(steering_motor.output);
     inputString = "";
     stringcomplete = false;
     stringstart = false;

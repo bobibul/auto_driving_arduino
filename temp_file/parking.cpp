@@ -4,7 +4,6 @@
 
 MainMotor main_motor;
 Ultrasonic ultrasonic_right(32, 33);
-Ultrasonic ultrasonic_back(34, 35);
 SteeringMotor steering_motor;
 
 String inputString = "";
