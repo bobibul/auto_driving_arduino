@@ -14,28 +14,16 @@ String prev;
 bool stringcomplete = false;
 bool stringstart = false;
 int angle = 0;
-float dis_front = 100;
-short count = 0;
-
 long startTime = -10000;
 
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(40);
+    main_motor.motor_forward(60);
 }
 
-void loop() {
-    dis_front = kf.updateEstimate(ultrasonic_front.ultrasonic_distance());
-    ultrasonic_right.ultrasonic_distance();
+void loop() { 
 
-    count++;
-    if(count >= 3){
-        Serial.println(dis_front); 
-        count = 0;
-    }
-
- 
     while(Serial.available()){
         char inchar = (char)Serial.read();
         switch(inchar){
@@ -55,19 +43,19 @@ void loop() {
                 main_motor.motor_forward(100); 
                 break;
 
-            case 'x' :
+            case 'x' : // 첫번째 장애물
                 startTime = millis();
-                //main_motor.motor_forward(40);
+                main_motor.motor_forward(40);
                 angle = 25;
                 break;
             
-            case 'y' : 
+            case 'y' : // 첫번째 장애물 지속
                 angle = 25;
                 break;
             
-            case 'z' : 
+            case 'z' : // 두번째 장애물
                 startTime = millis();
-                //main_motor.motor_forward(40);
+                main_motor.motor_forward(40);
                 angle = -25;
                 break;
 
@@ -79,8 +67,9 @@ void loop() {
         }
     }
 
-    if(stringcomplete == true && stringstart == true && millis() - startTime >= 4000){
-        angle = inputString.toInt();    
+    if(stringcomplete == true && stringstart == true && millis() - startTime >= 3000){
+        angle = inputString.toInt(); 
+        main_motor.motor_forward(60);   
     }
     
     steering_motor.setpoint = angle;

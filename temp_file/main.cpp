@@ -3,8 +3,6 @@
 #include "Mission.h"
 
 MainMotor main_motor;
-Ultrasonic ultrasonic_front(44, 45);
-Ultrasonic ultrasonic_right(32, 33);
 SteeringMotor steering_motor;
 
 String inputString = "";
@@ -18,7 +16,6 @@ void setup()
 {
     Serial.begin(115200); // 시리얼 모니터 연결
     main_motor.motor_forward(255);
-    
 }
 
 void loop() {
