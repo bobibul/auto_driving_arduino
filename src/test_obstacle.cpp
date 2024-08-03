@@ -19,7 +19,7 @@ long startTime = -10000;
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(60);
+    main_motor.motor_forward(80);
 }
 
 void loop() { 
@@ -40,12 +40,12 @@ void loop() {
                 break;
 
             case 'g' : // 초록불 출발
-                main_motor.motor_forward(100); 
+                main_motor.motor_forward(60); 
                 break;
 
             case 'x' : // 첫번째 장애물
                 startTime = millis();
-                main_motor.motor_forward(40);
+                main_motor.motor_forward(60);
                 angle = 25;
                 break;
             
@@ -55,7 +55,7 @@ void loop() {
             
             case 'z' : // 두번째 장애물
                 startTime = millis();
-                main_motor.motor_forward(40);
+                main_motor.motor_forward(60);
                 angle = -25;
                 break;
 
@@ -67,7 +67,7 @@ void loop() {
         }
     }
 
-    if(stringcomplete == true && stringstart == true && millis() - startTime >= 5000){
+    if(stringcomplete == true && stringstart == true && millis() - startTime >= 4000){
         angle = inputString.toInt(); 
         main_motor.motor_forward(60);   
     }
@@ -75,7 +75,7 @@ void loop() {
     steering_motor.setpoint = angle;
     steering_motor.read_angle();
     steering_motor.wheel_steering();
-    Serial.println(millis() - startTime );
+    Serial.println(millis() - startTime);
 
     inputString = "";
     stringcomplete = false;
