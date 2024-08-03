@@ -17,7 +17,7 @@ long startTime = -10000;
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(100);
+    main_motor.motor_forward(120);
 }
 
 void loop() { 
@@ -70,7 +70,7 @@ void loop() {
     }
 
     if(stringcomplete == true && stringstart == true){
-        if(millis() - startTime >= 6500){
+        if(millis() - startTime >= 7500){
             if(firstline){
                 angle = inputString.toInt();
             }
