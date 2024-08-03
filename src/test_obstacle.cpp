@@ -1,25 +1,23 @@
 #include <Arduino.h>
-#include <SimpleKalmanFilter.h>
 #include "Motor_Control.h"
 
 MainMotor main_motor;
-Ultrasonic ultrasonic_front(44, 45);
-Ultrasonic ultrasonic_right(32, 33);
 SteeringMotor steering_motor;
-SimpleKalmanFilter kf(2, 2, 150.0);
 
 String inputString = "";
 String prev;
 
 bool stringcomplete = false;
 bool stringstart = false;
+bool firstobs = false;
+bool firstline = true;
 int angle = 0;
 long startTime = -10000;
 
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(80);
+    main_motor.motor_forward(100);
 }
 
 void loop() { 
@@ -40,13 +38,15 @@ void loop() {
                 break;
 
             case 'g' : // 초록불 출발
-                main_motor.motor_forward(60); 
+                main_motor.motor_forward(80); 
                 break;
 
             case 'x' : // 첫번째 장애물
                 startTime = millis();
-                main_motor.motor_forward(60);
+                main_motor.motor_forward(80);
                 angle = 25;
+                firstobs = true;
+                firstline = false;
                 break;
             
             case 'y' : // 첫번째 장애물 지속
@@ -55,8 +55,10 @@ void loop() {
             
             case 'z' : // 두번째 장애물
                 startTime = millis();
-                main_motor.motor_forward(60);
+                main_motor.motor_forward(80);
                 angle = -25;
+                firstobs = false;
+                firstline = true; 
                 break;
 
             default : 
@@ -67,9 +69,23 @@ void loop() {
         }
     }
 
-    if(stringcomplete == true && stringstart == true && millis() - startTime >= 4000){
-        angle = inputString.toInt(); 
-        main_motor.motor_forward(60);   
+    if(stringcomplete == true && stringstart == true){
+        if(millis() - startTime >= 6500){
+            if(firstline){
+                angle = inputString.toInt();
+            }
+            else{
+                angle = 0;
+            }
+        }
+        else if(millis() - startTime >= 4000){
+            if(firstobs){
+                angle = -25;
+            }
+            else{
+                angle = 25;
+            }
+        }
     }
     
     steering_motor.setpoint = angle;
