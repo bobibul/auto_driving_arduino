@@ -15,7 +15,6 @@ int angle = 0;
 void setup() 
 {
     Serial.begin(115200); // 시리얼 모니터 연결
-    main_motor.motor_forward(255);
 }
 
 void loop() {
@@ -28,6 +27,10 @@ void loop() {
         }
         else if(inchar == '\n'){
             stringcomplete = true;
+        }
+
+        else if(inchar == 's'){
+            main_motor.motor_forward(60);
         }
 
         else{

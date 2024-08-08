@@ -81,11 +81,11 @@ void SteeringMotor::parking_wheel_steering(int setpoint)
 
         if(output > 1){
             analogWrite(STEERING_MOTOR_IN1, LOW);
-            analogWrite(STEERING_MOTOR_IN2,  80 + output * 3);
+            analogWrite(STEERING_MOTOR_IN2,  70 + output * 3);
         }
 
         else if(output < -1){
-            analogWrite(STEERING_MOTOR_IN1, 80 - output * 3);
+            analogWrite(STEERING_MOTOR_IN1, 70 - output * 3);
             analogWrite(STEERING_MOTOR_IN2, LOW);
         }
         else{
@@ -111,14 +111,11 @@ Ultrasonic::Ultrasonic(int trig, int echo)
 float Ultrasonic::ultrasonic_distance(void)
 {
     digitalWrite(trig, LOW);
-    digitalWrite(echo, LOW);
     delayMicroseconds(2);
 
     digitalWrite(trig, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig, LOW);
-    duration = pulseIn(echo, HIGH);
-    distance = (duration / 2.0) * 0.0344;
-
+    distance = pulseIn(echo, HIGH, 200 * 58.2)/58.2;
     return distance;
 }
