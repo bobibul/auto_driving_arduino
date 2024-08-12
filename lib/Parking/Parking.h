@@ -4,6 +4,6 @@
 #include "Arduino.h"
 
 
-void parking(char mission_num, MainMotor main_motor, SteeringMotor steering_motor);
+void parking(char mission_num, MainMotor main_motor, SteeringMotor steering_motor, long stTime);
 
 #endif

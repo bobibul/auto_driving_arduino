@@ -37,21 +37,23 @@ void setup()
             while(Serial.available()){
                 mission_num = (char)Serial.read();
             }
-            if(mission_num == '1' || mission_num == '2' || mission_num == '3' || mission_num == '4'){
+            if(mission_num == '1' || mission_num == '2'){
                 break;
             }
         }
+        steering_motor.parking_wheel_steering(0);
         main_motor.motor_forward(80);
         while(1){
             if(Serial.available()){
                 break;
             }
-            // steering_motor.setpoint = 0;
-            // steering_motor.read_angle();
-            // steering_motor.wheel_steering();
+            steering_motor.setpoint = 0;    
+            steering_motor.read_angle();
+            steering_motor.wheel_steering();
             
         }
-        parking(mission_num, main_motor, steering_motor);
+        long stTime = 0;
+        parking(mission_num, main_motor, steering_motor, stTime);
     }
 }
 
